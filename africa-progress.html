@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Western Africa Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .country {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        .country-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .country-header h3 {
+            margin: 0;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0;
+            transition: width 0.3s;
+        }
+        .projects {
+            margin-top: 10px;
+            display: none;
+        }
+        .project {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .project-details {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .toggle-icon {
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Western Africa Projects</h1>
+    
+    <div id="countries"></div>
+
+    <script>
+        const countriesData = [
+            { 
+                name: "Nigeria", 
+                progress: 75, 
+                projects: [
+                    { name: "Project A", progress: 80, details: "Details about Project A in Nigeria." },
+                    { name: "Project B", progress: 60, details: "Details about Project B in Nigeria." },
+                    { name: "Project C", progress: 90, details: "Details about Project C in Nigeria." },
+                    { name: "Project D", progress: 70, details: "Details about Project D in Nigeria." }
+                ]
+            },
+            { 
+                name: "Ghana", 
+                progress: 60, 
+                projects: [
+                    { name: "Project A", progress: 50, details: "Details about Project A in Ghana." },
+                    { name: "Project B", progress: 70, details: "Details about Project B in Ghana." },
+                    { name: "Project C", progress: 60, details: "Details about Project C in Ghana." },
+                    { name: "Project D", progress: 60, details: "Details about Project D in Ghana." }
+                ]
+            },
+            {
+                name: "Ivory Coast",
+                progress: 85,
+                projects: [
+                    { name: "Project A", progress: 90, details: "Details about Project A in Ivory Coast." },
+                    { name: "Project B", progress: 80, details: "Details about Project B in Ivory Coast." },
+                    { name: "Project C", progress: 85, details: "Details about Project C in Ivory Coast." },
+                    { name: "Project D", progress: 85, details: "Details about Project D in Ivory Coast." }
+                ]
+            },
+            {
+                name: "Senegal",
+                progress: 50,
+                projects: [
+                    { name: "Project A", progress: 40, details: "Details about Project A in Senegal." },
+                    { name: "Project B", progress: 60, details: "Details about Project B in Senegal." },
+                    { name: "Project C", progress: 50, details: "Details about Project C in Senegal." },
+                    { name: "Project D", progress: 50, details: "Details about Project D in Senegal." }
+                ]
+            },
+            {
+                name: "Mali",
+                progress: 70,
+                projects: [
+                    { name: "Project A", progress: 75, details: "Details about Project A in Mali." },
+                    { name: "Project B", progress: 65, details: "Details about Project B in Mali." },
+                    { name: "Project C", progress: 70, details: "Details about Project C in Mali." },
+                    { name: "Project D", progress: 70, details: "Details about Project D in Mali." }
+                ]
+            },
+            {
+                name: "Liberia",
+                progress: 65,
+                projects: [
+                    { name: "Project A", progress: 60, details: "Details about Project A in Liberia." },
+                    { name: "Project B", progress: 70, details: "Details about Project B in Liberia." },
+                    { name: "Project C", progress: 65, details: "Details about Project C in Liberia." },
+                    { name: "Project D", progress: 65, details: "Details about Project D in Liberia." }
+                ]
+            }
+        ];
+
+        function renderCountries() {
+            const countriesContainer = document.getElementById("countries");
+
+            countriesData.forEach(country => {
+                const countryElement = document.createElement("div");
+                countryElement.className = "country";
+
+                countryElement.innerHTML = `
+                    <div class="country-header">
+                        <h3>${country.name}</h3>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" style="width: ${country.progress}%"></div>
+                    </div>
+                    <div class="projects">
+                        ${country.projects.map(project => `
+                            <div class="project">
+                                <h4>${project.name} <span class="toggle-icon">+</span></h4>
+                                <div class="progress-bar">
+                                    <div class="progress-bar-inner" style="width: ${project.progress}%"></div>
+                                </div>
+                                <div class="project-details">${project.details}</div>
+                            </div>
+                        `).join("")}
+                    </div>
+                `;
+
+                countriesContainer.appendChild(countryElement);
+            });
+
+            addToggleListeners();
+        }
+
+        function addToggleListeners() {
+            document.querySelectorAll(".country-header").forEach(header => {
+                header.addEventListener("click", () => {
+                    const projects = header.nextElementSibling.nextElementSibling;
+                    const toggleIcon = header.querySelector(".toggle-icon");
+                    if (projects.style.display === "none" || !projects.style.display) {
+                        projects.style.display = "block";
+                        toggleIcon.textContent = "-";
+                    } else {
+                        projects.style.display = "none";
+                        toggleIcon.textContent = "+";
+                    }
+                });
+            });
+
+            document.querySelectorAll(".project h4").forEach(projectHeader => {
+                projectHeader.addEventListener("click", () => {
+                    const details = projectHeader.nextElementSibling.nextElementSibling;
+                    const toggleIcon = projectHeader.querySelector(".toggle-icon");
+                    if (details.style.display === "none" || !details.style.display) {
+                        details.style.display = "block";
+                        toggleIcon.textContent = "-";
+                    } else {
+                        details.style.display = "none";
+                        toggleIcon.textContent = "+";
+                    }
+                });
+            });
+        }
+
+        renderCountries();
+    </script>
+</body>
+</html>
